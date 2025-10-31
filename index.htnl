@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HelPlus</title>
+  <link rel="icon" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/wrench-adjustable-circle.svg" type="image/svg+xml">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    body { background-color: #f8f9fa; }
+    .navbar {
+      background: linear-gradient(90deg, #0d6efd 60%, #6c757d 100%);
+      padding: 0.8rem 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .navbar-brand {
+      font-size: 1.7rem;
+      font-weight: bold;
+      color: #fff !important;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .navbar-nav .nav-link {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #fff !important;
+      letter-spacing: 0.5px;
+      margin: 0 0.25rem;
+      transition: color 0.2s;
+      border-radius: 2rem;
+      padding: 0.4rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .navbar-nav .nav-link.active, .navbar-nav .nav-link:hover {
+      background: #fff;
+      color: #0d6efd !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .navbar-toggler {
+      background: #fff;
+    }
+    .navbar-toggler-icon {
+      color: #0d6efd;
+    }
+    /* Icon Animation */
+    .nav-icon {
+      transition: transform 0.3s cubic-bezier(.5,1.5,.5,1), color 0.2s;
+      display: inline-block;
+    }
+    .nav-link:hover .nav-icon,
+    .nav-link:focus .nav-icon {
+      transform: scale(1.3) rotate(-20deg);
+      color: #0d6efd !important;
+      filter: drop-shadow(0 2px 6px #0d6efd88);
+    }
+    .nav-icon.scroll-animate {
+      animation: bounce 0.5s cubic-bezier(.5,1.5,.5,1);
+      color: #0d6efd !important;
+      filter: drop-shadow(0 2px 6px #0d6efd88);
+    }
+    @keyframes bounce {
+      0%   { transform: translateY(0) scale(1);}
+      30%  { transform: translateY(-8px) scale(1.2);}
+      50%  { transform: translateY(-12px) scale(1.1);}
+      70%  { transform: translateY(2px) scale(1);}
+      100% { transform: translateY(0) scale(1);}
+    }
+    .hero {
+      background: linear-gradient(90deg, #0d6efd 60%, #6c757d 100%);
+      color: #fff;
+      padding: 60px 0;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+    }
+    .hero-img {
+      max-width: 100%;
+      border-radius: 2rem;
+      box-shadow: 0 0 32px rgba(0,0,0,0.25);
+      object-fit: cover;
+      object-position: center;
+      min-height: 320px;
+    }
+    .section-title {
+      font-weight: bold;
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      color: #0d6efd;
+    }
+    .card-icon {
+      font-size: 3rem;
+      color: #0d6efd;
+      margin-bottom: 1rem;
+    }
+    .testimonials {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 0 18px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    .cta-section {
+      background: linear-gradient(90deg, #0d6efd 60%, #6c757d 100%);
+      color: #fff;
+      padding: 2.5rem 0;
+      text-align: center;
+      border-radius: 1rem;
+      margin-top: 3rem;
+    }
+    .pricing-section {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 0 18px rgba(0,0,0,0.1);
+      padding: 2.5rem 1rem;
+      margin-bottom: 3rem;
+    }
+    .plan-card {
+      border: 2px solid #0d6efd;
+      border-radius: 1rem;
+      box-shadow: 0 0 16px rgba(0,0,0,0.09);
+      padding: 2rem 1rem;
+      min-height: 340px;
+      transition: transform 0.2s;
+      background: #f0f8ff;
+    }
+    .plan-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 0 32px rgba(0,0,0,0.12);
+    }
+    .plan-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #0d6efd;
+      margin-bottom: .5rem;
+    }
+    .plan-price {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #fdc40c;
+      margin-bottom: .5rem;
+    }
+    .dev-section {
+      background: #e9ecef;
+      border-radius: 1rem;
+      padding: 2.5rem 1rem;
+      margin-bottom: 3rem;
+    }
+    .dev-card {
+      background: #fff;
+      box-shadow: 0 0 16px rgba(0,0,0,0.07);
+      border-radius: 1rem;
+      padding: 2rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+    /* Chat bubble styles */
+    .chat-float {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      gap: 8px;
+      font-family: inherit;
+    }
+    .chat-bubble {
+      background: #fff;
+      color: #222;
+      border-radius: 16px;
+      box-shadow: 0 2px 14px #0001;
+      padding: 14px 18px;
+      font-size: 1rem;
+      max-width: 250px;
+      border: none;
+      position: relative;
+      animation: bubbleIn 0.8s cubic-bezier(.5,1.5,.5,1);
+    }
+    .chat-bubble:after {
+      content: '';
+      position: absolute;
+      bottom: -12px; right: 32px;
+      width: 24px; height: 24px;
+      background: #fff;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 2px 14px #0001;
+      transform: rotate(45deg);
+    }
+    @keyframes bubbleIn {
+      0% { transform: scale(0.4); opacity: 0;}
+      70% { transform: scale(1.1);}
+      100% { transform: scale(1); opacity: 1;}
+    }
+    .chat-btn {
+      background: linear-gradient(135deg, #6c63ff 60%, #00f2fe 100%);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px; height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      position: relative;
+      box-shadow: 0 2px 14px #0002;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+    .chat-btn:hover {
+      box-shadow: 0 2px 18px #00f2fe99;
+    }
+    .chat-btn .badge {
+      position: absolute;
+      top: 8px; right: 8px;
+      background: #f44336;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.9rem;
+      width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid #fff;
+      font-weight: bold;
+      pointer-events: none;
+      animation: badgePop 0.7s cubic-bezier(.5,1.5,.5,1);
+    }
+    @keyframes badgePop {
+      0% { transform: scale(0);}
+      70% { transform: scale(1.2);}
+      100% { transform: scale(1);}
+    }
+  </style>
+  <script>
+    // Animación de todos los íconos al hacer scroll
+    let lastScroll = window.scrollY;
+    window.addEventListener('scroll', function() {
+      // Solo si el scroll cambió significativamente (para evitar spam de animación)
+      if (Math.abs(window.scrollY - lastScroll) > 10) {
+        document.querySelectorAll('.nav-icon').forEach(icon => {
+          icon.classList.add('scroll-animate');
+          setTimeout(() => {
+            icon.classList.remove('scroll-animate');
+          }, 500);
+        });
+        lastScroll = window.scrollY;
+      }
+    });
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-wrench-adjustable-circle nav-icon"></i> HELPLUS
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#servicios"><i class="bi bi-gear nav-icon"></i> Servicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#planes"><i class="bi bi-cash-stack nav-icon"></i> Planes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#equipos"><i class="bi bi-laptop nav-icon"></i> Equipos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#desarrollo"><i class="bi bi-robot nav-icon"></i> Desarrollo</a></li>
+          <li class="nav-item"><a class="nav-link" href="#testimonios"><i class="bi bi-chat-dots nav-icon"></i> Testimonios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contacto"><i class="bi bi-whatsapp nav-icon"></i> Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+          <!-- Nueva imagen alusiva a soporte y desarrollo de software -->
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Soporte y desarrollo de software" class="hero-img">
+        </div>
+        <div class="col-lg-6 order-lg-1">
+          <h1 class="display-5 fw-bold mb-3">Soluciones integrales en Soporte y Desarrollo de Software</h1>
+          <p class="lead mb-4">Soporte técnico, desarrollo de aplicaciones, trabajo colaborativo y tecnología para tu empresa. ¡Confía en expertos!</p>
+          <a href="https://wa.me/573226218053?text=Buen%20dia,%20helplus%20por%20favor%20requiero%20soporte%20en%20:%20%20Compra%20de%20Equipo/Mantenimiento/desarrollo%20de%20software" 
+            class="btn btn-warning btn-lg me-2" target="_blank">
+            <i class="bi bi-wrench-adjustable-circle me-2 nav-icon"></i>Solicita Soporte
+          </a>
+          <a href="#equipos" class="btn btn-outline-light btn-lg"><i class="bi bi-cart4 me-2 nav-icon"></i>Quiero Comprar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios Section -->
+  <section id="servicios" class="py-5">
+    <div class="container">
+      <h2 class="section-title text-center">Nuestros Servicios</h2>
+      <div class="row g-4 mt-3">
+        <div class="col-md-3">
+          <div class="card h-100 text-center shadow-sm">
+            <div class="card-body">
+              <div class="card-icon"><i class="bi bi-tools nav-icon"></i></div>
+              <h5 class="card-title">Mantenimiento Preventivo y Correctivo</h5>
+              <p class="card-text">Diagnóstico profesional, limpieza profunda, cambio de pasta térmica, optimización y reparación de hardware y software. ¡Mantén tu equipo como nuevo!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card h-100 text-center shadow-sm">
+            <div class="card-body">
+              <div class="card-icon"><i class="bi bi-arrow-repeat nav-icon"></i></div>
+              <h5 class="card-title">Actualización y Optimización</h5>
+              <p class="card-text">Instalación de sistemas operativos, drivers y software, actualizaciones de seguridad, expansión de memoria y almacenamiento. ¡Rápido y seguro!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card h-100 text-center shadow-sm">
+            <div class="card-body">
+              <div class="card-icon"><i class="bi bi-cpu nav-icon"></i></div>
+              <h5 class="card-title">Venta de Partes y Accesorios</h5>
+              <p class="card-text">Ofrecemos discos duros SSD, memorias RAM, fuentes de poder, tarjetas madre y más. Partes 100% compatibles y de última generación, sobre pedido.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card h-100 text-center shadow-sm">
+            <div class="card-body">
+              <div class="card-icon"><i class="bi bi-robot nav-icon"></i></div>
+              <h5 class="card-title">Desarrollo de Software</h5>
+              <p class="card-text">Soluciones a la medida para automatizar procesos administrativos, gestión de inventarios, facturación y más. ¡Optimiza tu negocio con tecnología!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Planes de Mantenimiento -->
+  <section id="planes" class="pricing-section container my-5">
+    <h2 class="section-title text-center">Planes de Mantenimiento</h2>
+    <div class="row g-4 justify-content-center mt-4">
+      <div class="col-md-4">
+        <div class="plan-card text-center">
+          <div class="plan-title"><i class="bi bi-shield-check nav-icon"></i> Plan 1: Mantenimiento Predictivo</div>
+          <div class="plan-price">$50.000</div>
+          <ul class="list-unstyled mb-4">
+            <li><i class="bi bi-check-circle nav-icon"></i> Revisión preventiva</li>
+            <li><i class="bi bi-search nav-icon"></i> Diagnóstico de fallas potenciales</li>
+            <li><i class="bi bi-lightbulb nav-icon"></i> Recomendaciones de mejora</li>
+          </ul>
+          <a href="#contacto" class="btn btn-outline-primary"><i class="bi bi-whatsapp nav-icon"></i> Solicitar este plan</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="plan-card text-center">
+          <div class="plan-title"><i class="bi bi-tools nav-icon"></i> Plan 2: Mantenimiento Correctivo</div>
+          <div class="plan-price">$100.000</div>
+          <ul class="list-unstyled mb-4">
+            <li><i class="bi bi-cpu nav-icon"></i> Reparación de hardware y software</li>
+            <li><i class="bi bi-brush nav-icon"></i> Limpieza física y lógica</li>
+            <li><i class="bi bi-exclamation-triangle nav-icon"></i> Solución de problemas críticos</li>
+          </ul>
+          <a href="#contacto" class="btn btn-outline-primary"><i class="bi bi-whatsapp nav-icon"></i> Solicitar este plan</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="plan-card text-center">
+          <div class="plan-title"><i class="bi bi-pc-display-horizontal nav-icon"></i> Plan 3: Armando tu Equipo a la Medida</div>
+          <div class="plan-price">$150.000</div>
+          <ul class="list-unstyled mb-4">
+            <li><i class="bi bi-person-check nav-icon"></i> Asesoría personalizada</li>
+            <li><i class="bi bi-boxes nav-icon"></i> Selección de componentes</li>
+            <li><i class="bi bi-power nav-icon"></i> Ensamble y puesta en marcha</li>
+          </ul>
+          <a href="#contacto" class="btn btn-outline-primary"><i class="bi bi-whatsapp nav-icon"></i> Solicitar este plan</a>
+        </div>
+      </div>
+    </div>
+    <p class="text-center mt-4 fs-6">* Precios sujetos a cambios según tipo de equipo y ubicación.</p>
+  </section>
+
+  <!-- Equipos Section -->
+  <section id="equipos" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="section-title text-center">Venta de Equipos</h2>
+      <div class="row g-4 mt-3">
+        <div class="col-md-6">
+          <div class="card shadow-sm h-100">
+            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Equipos Portátiles">
+            <div class="card-body">
+              <h5 class="card-title fw-bold"><i class="bi bi-laptop nav-icon"></i> Laptops personalizadas</h5>
+              <p class="card-text">Equipos portátiles configurados para trabajo, estudio o gaming. Selecciona procesador, memoria, almacenamiento y más. ¡Tu laptop, tu estilo!</p>
+              <a href="#contacto" class="btn btn-primary"><i class="bi bi-envelope-paper me-2 nav-icon"></i>Solicitar Cotización</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card shadow-sm h-100">
+            <img src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Equipos de Mesa">
+            <div class="card-body">
+              <h5 class="card-title fw-bold"><i class="bi bi-pc-display-horizontal nav-icon"></i> PCs de Escritorio a tu medida</h5>
+              <p class="card-text">Computadoras de escritorio para empresa, hogar o alto rendimiento. Personalizadas en cada componente y armadas por expertos. ¡Haz crecer tu negocio o disfruta el mejor performance!</p>
+              <a href="#contacto" class="btn btn-primary"><i class="bi bi-envelope-paper me-2 nav-icon"></i>Solicitar Cotización</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="text-center mt-4 fs-5">Todos los equipos y partes se venden <strong>sobre pedido</strong>. Elige, cotiza y recibe asesoría personalizada.</p>
+    </div>
+  </section>
+
+  <!-- Desarrollo Section -->
+  <section id="desarrollo" class="dev-section container my-5">
+    <h2 class="section-title text-center">Desarrollo Web y Software</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-5 dev-card text-center">
+        <h5 class="fw-bold mb-2"><i class="bi bi-laptop nav-icon"></i> Páginas Web Profesionales</h5>
+        <p>Desarrollamos sitios web modernos, responsivos y seguros. Ejemplos:</p>
+        <ul class="list-unstyled">
+          <li><i class="bi bi-browser-chrome nav-icon"></i> Landing page institucional</li>
+          <li><i class="bi bi-bag-check nav-icon"></i> Catálogo de productos</li>
+          <li><i class="bi bi-calendar-check nav-icon"></i> Portal de reservas</li>
+        </ul>
+        <div class="fs-5 mt-2">Precios desde <strong>$1.000.000</strong></div>
+        <div class="mt-2"><i class="bi bi-bullseye nav-icon"></i> Incluye asesoría en estrategias de mercado digital.</div>
+      </div>
+      <div class="col-md-5 dev-card text-center">
+        <h5 class="fw-bold mb-2"><i class="bi bi-robot nav-icon"></i> Software para Automatización</h5>
+        <p>Soluciones a la medida para optimizar procesos administrativos. Ejemplos:</p>
+        <ul class="list-unstyled">
+          <li><i class="bi bi-box-seam nav-icon"></i> Gestión de inventarios</li>
+          <li><i class="bi bi-receipt nav-icon"></i> Automatización de facturación</li>
+          <li><i class="bi bi-bar-chart-line nav-icon"></i> Reportes automáticos</li>
+        </ul>
+        <div class="mt-2"><i class="bi bi-whatsapp nav-icon"></i> Solicita tu cotización personalizada.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonios Section -->
+  <section id="testimonios" class="py-5">
+    <div class="container">
+      <h2 class="section-title text-center">Testimonios de Clientes</h2>
+      <div class="testimonials mx-auto" style="max-width: 900px;">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="text-center">
+              <i class="bi bi-star-fill text-warning fs-2 mb-2 nav-icon"></i>
+              <p>"Mi laptop funciona mucho mejor después del servicio, ¡rápidos y confiables!"</p>
+              <span class="fw-bold">- Ana R.</span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="text-center">
+              <i class="bi bi-star-fill text-warning fs-2 mb-2 nav-icon"></i>
+              <p>"Armé mi PC gamer con ellos y fue la mejor inversión, asesoría personalizada y entregas puntuales."</p>
+              <span class="fw-bold">- Carlos M.</span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="text-center">
+              <i class="bi bi-star-fill text-warning fs-2 mb-2 nav-icon"></i>
+              <p>"Excelente atención y resultados, siempre recurro a HelPlus.com para mantenimiento."</p>
+              <span class="fw-bold">- Laura G.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section id="contacto" class="cta-section container">
+    <h2 class="mb-3">¿Estás listo para llevar tu equipo al siguiente nivel?
+O tal vez… ¿te atreves a dar vida a tus ideas y convertirlas en software innovador? <i class="bi bi-rocket nav-icon"></i></h2>
+    <p class="fs-5 mb-4">Recibe asesoría experta, mantenimiento confiable o cotiza tu PC/laptop personalizada.<br>¡Haz clic y te ayudamos a encontrar la mejor solución!</p>
+    <a href="https://wa.me/573226218053?text=Buen%20dia,%20helplus%20por%20favor%20requiero%20soporte%20en%20:%20%20Compra%20de%20Equipo/Mantenimiento/desarrollo%20de%20software" 
+      class="btn btn-warning btn-lg me-2" target="_blank">
+      <i class="bi bi-wrench-adjustable-circle me-2 nav-icon"></i>Solicita HelPlus ya!
+    </a>
+  </section>
+
+  <!-- Chat flotante estilo burbuja -->
+  <div class="chat-float">
+    <div class="chat-bubble">
+      <span style="font-size:1.2em;">👋</span>
+      ¡Hola! ¿Alguna duda con la que podamos ayudarte?
+    </div>
+    <a class="chat-btn" href="https://wa.me/573226218053?text=Hola,%20necesito%20soporte%20o%20información%20sobre%20HelPlus" target="_blank" title="Chatea con nosotros">
+      <i class="bi bi-chat-dots nav-icon"></i>
+      <span class="badge">1</span>
+    </a>
+  </div>
+
+  <footer class="bg-primary text-white py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2025 Soporte.com | Soluciones avanzadas en tecnología y mantenimiento</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
